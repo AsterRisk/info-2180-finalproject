@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang = "en-us">
+    <head>
+        <title>Create a Ticket</title>
+        <meta charset = "utf-8"/>
+        <link rel = "stylesheet" type = "text/css" href = "./styles/createTicket.css">
+    </head>
+    <body> 
+        <h1>Create Issue</h1>
+        <form method = "POST" action = "./scripts/createTicket.php" id = "issue">
+            <div class = "form-data">
+                <label for = "title">Title</label>
+                <br>
+                <input type = "text" id = "title" name = "title">
+            </div>
+            <div class = "form-data">
+                <label for = "desc">Description</label>
+                <br>
+                <textarea form = "issue" id = "desc" name = "desc" cols = "50" rows = "6"></textarea>
+            </div>
+            <div class = "form-data">
+                <label for = "assigned-to">Assigned To</label>
+                <br>
+                    
+                    <div id = "usersFromDB">
+                        <?php
+                            echo "<select name = 'assigned-to' id = 'assigned-to'>";
+                            echo "<option value = 'default'>------------</option>";
+                            $results;
+                            $servername = "localhost";
+                            $username = "username";
+                            $password = "password";
+                            $dbName = "schema";
+                            $x = 1;
+                            // Create connection
+                            $conn = mysqli_connect($servername, $username, $password, $dbName);
+                            // Check connection
+                            if (!$conn) {
+                                die("Connection failed: " . mysqli_connect_error());
+                            }
+                            else
+                            {
+                                $q = "SELECT name FROM users";
+                                $results = mysqli_query($conn, $q);
+                                foreach($results as $name)
+                                {
+                                    echo "<option value = '".$x. "'>".$name."</option>";
+                                    $x = $x+1;
+                                }
+                            }    
+                        ?>
+                    </div>
+                    
+                </select>
+            </div>
+            <div class = "form-data">
+                <label for = "type">Type</label>
+                <br>
+                <select name = "type" id = "type">
+                    <option value = "default">------------</option>
+                    <option value = "1">Bug</option>
+                    <option value = "2">Proposal</option>
+                    <option value = "3">Task</option>
+                </select>
+            </div>
+            <div class = "form-data">
+                <label for = "priority">Priority</label>
+                <br>
+                <select name = "priority" id = "priority">
+                    <option value = "default">------------</option>
+                    <option value = "1">Minor</option>
+                    <option value = "2">Major</option>
+                    <option value = "3">Critical</option>
+                </select>
+            </div>
+            <input type = "submit" id = "submitBttn"/>
+        </form>
+    </body>
+</html>
